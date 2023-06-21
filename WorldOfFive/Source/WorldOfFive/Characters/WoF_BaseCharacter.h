@@ -45,7 +45,14 @@ public:
 	virtual void Landed(const FHitResult& Hit) override;
 	virtual void NotifyJumpApex() override;
 
-	void Fire();
+	void EquipFirstItem();
+	void EquipSecondItem();
+
+	void StartFire();
+	void StopFire();
+
+	void SetNextSkill();
+	void SetPreviousSkill();
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Movement")

@@ -33,7 +33,12 @@ void AWoF_PlayerController::SetupInputComponent()
 	InputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::StartSprint);
 	InputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &AWoF_PlayerController::StopSprint);
 
-	InputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::Fire);
+	InputComponent->BindAction("FirstItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipFirstItem);
+	InputComponent->BindAction("SecondItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipSecondItem);
+	InputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::StartingFire);
+	InputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &AWoF_PlayerController::StopFire);
+	InputComponent->BindAction("NextSkill", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::SetNextSkill);
+	InputComponent->BindAction("PreviousSkill", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::SetPreviousSkill);
 }
 
 void AWoF_PlayerController::MoveForward(float Value)
@@ -117,11 +122,51 @@ void AWoF_PlayerController::StopSprint()
 	}
 }
 
-void AWoF_PlayerController::Fire()
+void AWoF_PlayerController::EquipFirstItem()
 {
 	if (BaseCharacter.IsValid())
 	{
-		BaseCharacter->Fire();
+		BaseCharacter->EquipFirstItem();
+	}
+}
+
+void AWoF_PlayerController::EquipSecondItem()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->EquipSecondItem();
+	}
+}
+
+void AWoF_PlayerController::StartingFire()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->StartFire();
+	}
+}
+
+void AWoF_PlayerController::StopFire()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->StopFire();
+	}
+}
+
+void AWoF_PlayerController::SetNextSkill()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->SetNextSkill();
+	}
+}
+
+void AWoF_PlayerController::SetPreviousSkill()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->SetPreviousSkill();
 	}
 }
 

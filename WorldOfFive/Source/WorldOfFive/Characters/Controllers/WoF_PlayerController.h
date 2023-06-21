@@ -38,7 +38,13 @@ private:
 	void StartSprint();
 	void StopSprint();
 
-	void Fire();
+	void EquipFirstItem();
+	void EquipSecondItem();
+
+	void StartingFire();
+	void StopFire();
+	void SetNextSkill();
+	void SetPreviousSkill();
 
 	void CreateAndInitializeWidgets();
 	class UPlayerHUDWidget* PlayerHUDWidget = nullptr;

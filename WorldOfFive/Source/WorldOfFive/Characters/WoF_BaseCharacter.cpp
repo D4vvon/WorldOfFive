@@ -9,6 +9,7 @@
 #include "WorldOfFive_Types.h"
 #include "Engine/DamageEvents.h"
 #include "Component/CharacterEquipmentComponent.h"
+#include "Actors/Equipment/Weapons/RangeWeaponItem.h"
 
 AWoF_BaseCharacter::AWoF_BaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWoF_BaseCharacterMovementComp>(ACharacter::CharacterMovementComponentName))
@@ -142,9 +143,54 @@ void AWoF_BaseCharacter::NotifyJumpApex()
 	CurrentFallApex = GetActorLocation();
 }
 
-void AWoF_BaseCharacter::Fire()
+void AWoF_BaseCharacter::EquipFirstItem()
 {
-	CharacterEquipmentComponent->Fire();
+	CharacterEquipmentComponent->EquipPreimaryItem();
+}
+
+void AWoF_BaseCharacter::EquipSecondItem()
+{
+	CharacterEquipmentComponent->EquipSecondaryItem();
+}
+
+void AWoF_BaseCharacter::StartFire()
+{
+	if (CharacterEquipmentComponent->IsEquipping())
+	{
+		return;
+	}
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->StartFire();
+	}
+}
+
+void AWoF_BaseCharacter::StopFire()
+{
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->StopFire();
+	}
+}
+
+void AWoF_BaseCharacter::SetNextSkill()
+{
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->NextSkill();
+	}
+}
+
+void AWoF_BaseCharacter::SetPreviousSkill()
+{
+	ARangeWeaponItem* CurrentRangeWeapon = CharacterEquipmentComponent->GetCurrentRangeWeapon();
+	if (IsValid(CurrentRangeWeapon))
+	{
+		CurrentRangeWeapon->PreviousSkill();
+	}
 }
 
 void AWoF_BaseCharacter::TryChangeSprintState()

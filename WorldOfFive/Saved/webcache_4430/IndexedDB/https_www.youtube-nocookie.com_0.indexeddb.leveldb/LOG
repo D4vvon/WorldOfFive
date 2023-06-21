@@ -1,0 +1,6 @@
+2023/06/20-17:24:30.430 269c Creating DB D:/RPGWorldOfFive/WorldOfFive/WorldOfFive/Saved/webcache_4430\IndexedDB\https_www.youtube-nocookie.com_0.indexeddb.leveldb since it was missing.
+2023/06/20-17:24:30.435 269c Reusing MANIFEST D:/RPGWorldOfFive/WorldOfFive/WorldOfFive/Saved/webcache_4430\IndexedDB\https_www.youtube-nocookie.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/06/20-17:26:39.676 203c Level-0 table #5: started
+2023/06/20-17:26:39.679 203c Level-0 table #5: 1167 bytes OK
+2023/06/20-17:26:39.680 203c Delete type=0 #3
+2023/06/20-17:26:39.680 203c Manual compaction at level-0 from (begin) .. (end); will stop at (end)

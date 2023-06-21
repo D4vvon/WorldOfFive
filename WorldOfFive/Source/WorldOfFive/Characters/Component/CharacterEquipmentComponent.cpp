@@ -5,6 +5,7 @@
 #include "../WoF_BaseCharacter.h"
 #include "../../Actors/Equipment/Weapons/RangeWeaponItem.h"
 #include "../../WorldOfFive_Types.h"
+#include "Actors/Equipment/EquipableItem.h"
 
 
 // Called when the game starts
@@ -21,19 +22,97 @@ void UCharacterEquipmentComponent::BeginPlay()
 
 void UCharacterEquipmentComponent::CreateLoadout()
 {
-	if (!IsValid(SecondaryWeaponClass))
+	ItemsArray.AddZeroed((uint32)EEquipmentSlots::MAX);
+	for (const TPair<EEquipmentSlots, TSubclassOf<AEquipableItem>>& ItemPair : ItemsLoadout)
+	{
+		if (!IsValid(ItemPair.Value))
+		{
+			continue;
+		}
+		AEquipableItem* Item = GetWorld()->SpawnActor<AEquipableItem>(ItemPair.Value);
+		Item->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, Item->GetUnEquippedSocketName());
+		Item->SetOwner(BaseCharacter.Get());
+		ItemsArray[(uint32)ItemPair.Key] = Item;
+	}
+
+/*
+	CurrentEquippedWeapon = GetWorld()->SpawnActor<ARangeWeaponItem>(SecondaryWeaponClass);
+	CurrentEquippedWeapon->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
+	CurrentEquippedWeapon->SetOwner(BaseCharacter.Get());*/
+}
+
+void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
+{
+	if (bIsEquiping)
 	{
 		return;
 	}
-	CurrentEquippedWeapon = GetWorld()->SpawnActor<ARangeWeaponItem>(SecondaryWeaponClass);
-	CurrentEquippedWeapon->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, SocketCharacterWeapon);
-	CurrentEquippedWeapon->SetOwner(BaseCharacter.Get());
+
+	UnequipCurrentItem();
+	CurrentEquippedItem = ItemsArray[(uint32)Slot];
+	CurrentEquippedWeapon = Cast<ARangeWeaponItem>(CurrentEquippedItem);
+
+	if (IsValid(CurrentEquippedItem))
+	{
+		UAnimMontage* EquipingMontage = CurrentEquippedItem->GetCharacterEquipAnimMontage();
+		if (IsValid(EquipingMontage))
+		{
+			bIsEquiping = true;
+			float EquipDuretion = BaseCharacter->PlayAnimMontage(EquipingMontage);
+			GetWorld()->GetTimerManager().SetTimer(EquipTimer, this, &UCharacterEquipmentComponent::AttachCurrentItemToEquipmentSocket, EquipDuretion, false);
+		}
+		else
+		{
+			AttachCurrentItemToEquipmentSocket();
+		}
+		CurrentEquippedSlot = Slot;
+	}
+	else
+	{
+		CurrentEquippedSlot = EEquipmentSlots::None;
+	}
 }
 
-void UCharacterEquipmentComponent::Fire()
+void UCharacterEquipmentComponent::AttachCurrentItemToEquipmentSocket()
 {
+	CurrentEquippedItem->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetEquippedSocketName());
+	bIsEquiping = false;
+}
+
+void UCharacterEquipmentComponent::UnequipCurrentItem()
+{
+	if (IsValid(CurrentEquippedItem))
+	{
+		CurrentEquippedItem->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetUnEquippedSocketName());
+	}
 	if (IsValid(CurrentEquippedWeapon))
 	{
-		CurrentEquippedWeapon->FireSetup();
+		CurrentEquippedWeapon->StopFire();
 	}
+}
+
+void UCharacterEquipmentComponent::EquipPreimaryItem()
+{
+	if (CurrentEquippedSlot != EEquipmentSlots::PrimaryWeapon)
+	{
+		EquipItemInSlot(EEquipmentSlots::PrimaryWeapon);
+	}
+}
+
+void UCharacterEquipmentComponent::EquipSecondaryItem()
+{
+	if (CurrentEquippedSlot != EEquipmentSlots::SecondaryWeapon)
+	{
+		EquipItemInSlot(EEquipmentSlots::SecondaryWeapon);
+	}
+}
+
+bool UCharacterEquipmentComponent::IsEquipping()
+{
+	return bIsEquiping;
+}
+
+ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon()
+{
+	return CurrentEquippedWeapon;
 }

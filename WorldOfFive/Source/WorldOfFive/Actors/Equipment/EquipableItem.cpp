@@ -4,3 +4,17 @@
 #include "Actors/Equipment/EquipableItem.h"
 
 
+FName AEquipableItem::GetUnEquippedSocketName()
+{
+	return UnequippedSocketName;
+}
+
+FName AEquipableItem::GetEquippedSocketName()
+{
+	return EquippedSocketName;
+}
+
+UAnimMontage* AEquipableItem::GetCharacterEquipAnimMontage()
+{
+	return CharacterEqupAnimMontage;
+}
