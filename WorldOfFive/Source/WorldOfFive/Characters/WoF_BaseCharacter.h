@@ -10,6 +10,7 @@ class UWoF_BaseCharacterMovementComp;
 class UCharacterAttributesComponent;
 class UCharacterEquipmentComponent;
 class UAnimMontage;
+class USceneComponent;
 UCLASS(Abstract, NotBlueprintable)
 class WORLDOFFIVE_API AWoF_BaseCharacter : public ACharacter
 {
@@ -28,11 +29,22 @@ public:
 	virtual void ChangeCrouchState();
 	virtual void SetCrouching();
 	virtual void SetUnCrouching();
-	virtual void EndRoll();
-	virtual void Roll();
 
-	virtual void StartSprint();
-	virtual void StopSprint();
+	virtual void Blocking() {};
+	virtual bool GetIsBlocking() { return true; };
+	virtual void SetIsBlocking(bool NewIsBlocking) {};
+
+	virtual USceneComponent* GetSkillPointLocation() { return nullptr; };
+
+	//
+	//virtual void EndRoll();
+	//virtual void Roll();
+	//
+
+	//
+	//virtual void StartSprint();
+	//virtual void StopSprint();
+	//
 
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -45,23 +57,26 @@ public:
 	virtual void Landed(const FHitResult& Hit) override;
 	virtual void NotifyJumpApex() override;
 
-	void EquipFirstItem();
-	void EquipSecondItem();
+	//
+	//void EquipFirstItem();
+	//void EquipSecondItem();
+	//void EquipThirdItem();
+	//void EquipFourthItem();
+	//
+	//void StartFire();
+	//void StopFire();
+	//
 
-	void StartFire();
-	void StopFire();
-
-	void SetNextSkill();
-	void SetPreviousSkill();
-
-protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Movement")
-	float SprintSpeed = 1200.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Movement")
-	bool bIsCanSprint = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Components")
-	UCharacterAttributesComponent* CharacterAttributesComponent;
+	//
+	//void EquipMeleeWeapon();
+	//void AttackWeaponMelee();
+	//void AttackBodyMelee();
+	////
+	//
+	////
+	//void SetNextSkill();
+	//void SetPreviousSkill();
+	////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Components")
 	UCharacterEquipmentComponent* CharacterEquipmentComponent;
 
@@ -69,24 +84,44 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Animations")
 	UAnimMontage* OnDeathAnimMontage;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Animations")
-	UAnimMontage* RollAnimMontage;
+protected:
+	//
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Movement")
+	//float SprintSpeed = 1200.0f;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Movement")
+	//bool bIsCanSprint = true;
+	//
 
-	virtual bool CanSprint();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character | Components")
+	UCharacterAttributesComponent* CharacterAttributesComponent;
+
+/*
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Animations")
+	UAnimMontage* RollAnimMontage;*/
+
+	//
+	//virtual bool CanSprint();
+	//
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Character | Attributes")
 	class UCurveFloat* FallDamageCurve;
 
 	UWoF_BaseCharacterMovementComp* WoF_BaseCharacterMovementComponent;
 private:
+	
+	//
+	//void TryChangeSprintState();
+	//bool bIsSprintRequested = false;
+	//
 
-	void TryChangeSprintState();
-	bool bIsSprintRequested = false;
+	bool bIsBlocking = false;
 
 	void EnableRagdoll();
 	FTimerHandle DeathMontageTimer;
 
-	FTimerHandle RollMontageTimer;
+	/*FTimerHandle RollMontageTimer;*/
 
 	FVector CurrentFallApex;
 };

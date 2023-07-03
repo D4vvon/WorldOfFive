@@ -24,16 +24,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes")
 	float DamageAmount = 40.0f;
 		
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes")
-	class UNiagaraSystem* ResultVFX;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes")
+	//class UNiagaraSystem* ResultVFX;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg")
-	TSubclassOf<class UDamageType> DamageTypeClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg")
-	EHitRegistrationType HitRegistration = EHitRegistrationType::HitScan;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg")
+	//TSubclassOf<class UDamageType> DamageTypeClass;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg")
+	//EHitRegistrationType HitRegistration = EHitRegistrationType::HitScan;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg", meta = (EditCondition = "HitRegistration == EHitRegistrationType::Projectile"))
-	TSubclassOf<class AWoF_Projectile> ProjectileClass;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Barell attributes | Hit reg", meta = (EditCondition = "HitRegistration == EHitRegistrationType::Projectile"))
+	//TSubclassOf<class AWoF_Projectile> ProjectileClass;
 
 private:
 	APawn* GetOwningPawn();
@@ -42,8 +42,9 @@ private:
 	UFUNCTION()
 	void ProcessHit(const FHitResult& HitResult, const FVector& Direction);
 
-	bool HitScanShot(FVector ShotStart, OUT FVector& ShotEnd, FVector ShotDirection);
+	bool HitScanShot(FVector ShotStart, OUT FVector& ShotEnd, FVector ShotDirection, UNiagaraSystem* ResultVFX, TSubclassOf<AActor> ActorClass);
+	bool HitScanMultishot(FVector ShotStart, OUT FVector& ShotEnd, FVector ShotDirection, UNiagaraSystem* ResultVFX, float FiringSkillRange);
 
-	void LaunchProjectile(FVector& LaunchStart, FVector& LaunchDirection);
+	void LaunchProjectile(FVector& LaunchStart, FVector& LaunchDirection, TSubclassOf<class AWoF_Projectile> ProjectileClass);
 
 };

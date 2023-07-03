@@ -6,6 +6,8 @@
 #include "../../Actors/Equipment/Weapons/RangeWeaponItem.h"
 #include "../../WorldOfFive_Types.h"
 #include "Actors/Equipment/EquipableItem.h"
+#include "Actors/Equipment/Weapons/MeleeWeaponItem.h"
+#include "WoF_BaseCharacterMovementComp.h"
 
 
 // Called when the game starts
@@ -47,10 +49,13 @@ void UCharacterEquipmentComponent::EquipItemInSlot(EEquipmentSlots Slot)
 	{
 		return;
 	}
-
-	UnequipCurrentItem();
+	if (CurrentEquippedSlot != EEquipmentSlots::None)
+	{
+		UnequipCurrentItem();
+	}
 	CurrentEquippedItem = ItemsArray[(uint32)Slot];
 	CurrentEquippedWeapon = Cast<ARangeWeaponItem>(CurrentEquippedItem);
+	CurrentMeleeWeaponItem = Cast<AMeleeWeaponItem>(CurrentEquippedItem);
 
 	if (IsValid(CurrentEquippedItem))
 	{
@@ -84,11 +89,17 @@ void UCharacterEquipmentComponent::UnequipCurrentItem()
 	if (IsValid(CurrentEquippedItem))
 	{
 		CurrentEquippedItem->AttachToComponent(BaseCharacter->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, CurrentEquippedItem->GetUnEquippedSocketName());
+		bIsEquip = false;
 	}
 	if (IsValid(CurrentEquippedWeapon))
 	{
 		CurrentEquippedWeapon->StopFire();
 	}
+	CurrentEquippedWeapon = nullptr;
+	CurrentEquippedItem = nullptr;
+	CurrentEquippedItem = nullptr;
+	CurrentMeleeWeaponItem = nullptr;
+	CurrentEquippedSlot = EEquipmentSlots::None;
 }
 
 void UCharacterEquipmentComponent::EquipPreimaryItem()
@@ -107,12 +118,47 @@ void UCharacterEquipmentComponent::EquipSecondaryItem()
 	}
 }
 
+void UCharacterEquipmentComponent::EquipThirthItem()
+{
+	if (CurrentEquippedSlot != EEquipmentSlots::ThrirdWeapon)
+	{
+		EquipItemInSlot(EEquipmentSlots::ThrirdWeapon);
+	}
+}
+
+void UCharacterEquipmentComponent::EquipFourthItem()
+{
+	if (CurrentEquippedSlot != EEquipmentSlots::FourthWeapon)
+	{
+		EquipItemInSlot(EEquipmentSlots::FourthWeapon);
+	}
+}
+
 bool UCharacterEquipmentComponent::IsEquipping()
 {
 	return bIsEquiping;
 }
 
+bool UCharacterEquipmentComponent::IsEquip()
+{
+	return bIsEquip;
+}
+
+void UCharacterEquipmentComponent::EquipMeleeItem()
+{
+	if (CurrentEquippedSlot != EEquipmentSlots::MeleeWeapon)
+	{
+		EquipItemInSlot(EEquipmentSlots::MeleeWeapon);
+		bIsEquip = true;
+	}
+}
+
 ARangeWeaponItem* UCharacterEquipmentComponent::GetCurrentRangeWeapon()
 {
 	return CurrentEquippedWeapon;
+}
+
+class AMeleeWeaponItem* UCharacterEquipmentComponent::GetCurrentMeleeWeapon() const
+{
+	return CurrentMeleeWeaponItem;
 }

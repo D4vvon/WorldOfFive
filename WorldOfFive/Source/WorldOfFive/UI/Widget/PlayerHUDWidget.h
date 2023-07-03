@@ -19,7 +19,13 @@ public:
 
 protected:
 	UFUNCTION(BlueprintCallable)
-	float GetHealthPercaent() const;
+	float GetHealthPercent() const;
+	
+	UFUNCTION(BlueprintCallable)
+	float GetStaminaPercent() const;
+
+	UFUNCTION(BlueprintCallable)
+	float GetManaPercent() const;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget names")
 	FName ReticleWidgetName;

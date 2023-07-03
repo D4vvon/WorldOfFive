@@ -12,13 +12,14 @@ void AWoF_PlayerController::SetPawn(APawn* InPawn)
 	Super::SetPawn(InPawn);
 	BaseCharacter = Cast<AWoF_BaseCharacter>(InPawn);
 
-	CreateAndInitializeWidgets();
+	//CreateAndInitializeWidgets();
 }
 
 void AWoF_PlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
+/*
 	InputComponent->BindAxis("MoveForward", this, &AWoF_PlayerController::MoveForward);
 	InputComponent->BindAxis("MoveRight", this, &AWoF_PlayerController::MoveRight);
 	InputComponent->BindAxis("Turn", this, &AWoF_PlayerController::Turn);
@@ -35,10 +36,16 @@ void AWoF_PlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("FirstItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipFirstItem);
 	InputComponent->BindAction("SecondItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipSecondItem);
+	InputComponent->BindAction("ThirdItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipThirdItem);
+	InputComponent->BindAction("FourthItem", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipFourthItem);
 	InputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::StartingFire);
 	InputComponent->BindAction("Fire", EInputEvent::IE_Released, this, &AWoF_PlayerController::StopFire);
 	InputComponent->BindAction("NextSkill", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::SetNextSkill);
 	InputComponent->BindAction("PreviousSkill", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::SetPreviousSkill);
+
+	InputComponent->BindAction("EquipMeleeWeapon", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::EquipMeleeWeapon);
+	InputComponent->BindAction("AttackWeapon", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::AttackWeaponMelee);
+	InputComponent->BindAction("AttackBody", EInputEvent::IE_Pressed, this, &AWoF_PlayerController::AttackBodyMelee);*/
 }
 
 void AWoF_PlayerController::MoveForward(float Value)
@@ -89,6 +96,7 @@ void AWoF_PlayerController::ChangeCrouchState()
 	}
 }
 
+/*
 void AWoF_PlayerController::Roll()
 {
 	if (BaseCharacter.IsValid())
@@ -127,7 +135,7 @@ void AWoF_PlayerController::EquipFirstItem()
 	if (BaseCharacter.IsValid())
 	{
 		BaseCharacter->EquipFirstItem();
-	}
+	}		
 }
 
 void AWoF_PlayerController::EquipSecondItem()
@@ -135,6 +143,22 @@ void AWoF_PlayerController::EquipSecondItem()
 	if (BaseCharacter.IsValid())
 	{
 		BaseCharacter->EquipSecondItem();
+	}
+}
+
+void AWoF_PlayerController::EquipThirdItem()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->EquipThirdItem();
+	}
+}
+
+void AWoF_PlayerController::EquipFourthItem()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->EquipFourthItem();
 	}
 }
 
@@ -170,6 +194,31 @@ void AWoF_PlayerController::SetPreviousSkill()
 	}
 }
 
+void AWoF_PlayerController::EquipMeleeWeapon()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->EquipMeleeWeapon();
+	}
+}
+
+void AWoF_PlayerController::AttackWeaponMelee()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->AttackWeaponMelee();
+	}
+}
+
+void AWoF_PlayerController::AttackBodyMelee()
+{
+	if (BaseCharacter.IsValid())
+	{
+		BaseCharacter->AttackBodyMelee();
+	}
+}*/
+
+/*
 void AWoF_PlayerController::CreateAndInitializeWidgets()
 {
 	if (!IsValid(PlayerHUDWidget))
@@ -189,4 +238,4 @@ void AWoF_PlayerController::CreateAndInitializeWidgets()
 			// TODO if character can aiming
 		}
 	}
-}
+}*/

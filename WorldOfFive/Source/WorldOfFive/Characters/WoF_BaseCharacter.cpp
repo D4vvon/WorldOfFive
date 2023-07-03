@@ -10,6 +10,7 @@
 #include "Engine/DamageEvents.h"
 #include "Component/CharacterEquipmentComponent.h"
 #include "Actors/Equipment/Weapons/RangeWeaponItem.h"
+#include "Actors/Equipment/Weapons/MeleeWeaponItem.h"
 
 AWoF_BaseCharacter::AWoF_BaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UWoF_BaseCharacterMovementComp>(ACharacter::CharacterMovementComponentName))
@@ -51,6 +52,7 @@ void AWoF_BaseCharacter::SetUnCrouching()
 	UnCrouch();
 }
 
+/*
 void AWoF_BaseCharacter::EndRoll()
 {
 	SetUnCrouching();
@@ -62,6 +64,7 @@ void AWoF_BaseCharacter::Roll()
 {
 	if (GetBaseCharacterMovementComponent()->Velocity != FVector::ZeroVector)
 	{
+/ *
 		GetBaseCharacterMovementComponent()->bOrientRotationToMovement = 1;
 		bUseControllerRotationYaw = false;
 		SetCrouching();
@@ -74,12 +77,17 @@ void AWoF_BaseCharacter::Roll()
 		{
 			GetBaseCharacterMovementComponent()->bOrientRotationToMovement = 0;
 			bUseControllerRotationYaw = true;
-		}
+		}* /
 	}
-}
+}*/
 
+/*
 void AWoF_BaseCharacter::StartSprint()
 {
+	if (!CanSprint())
+	{
+		return;
+	}
 	bIsSprintRequested = true;
 	if (bIsCrouched)
 	{
@@ -90,12 +98,13 @@ void AWoF_BaseCharacter::StartSprint()
 void AWoF_BaseCharacter::StopSprint()
 {
 	bIsSprintRequested = false;
-}
+}*/
 
 void AWoF_BaseCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+/*
 	TryChangeSprintState();
 	if (bIsSprintRequested)
 	{
@@ -108,7 +117,7 @@ void AWoF_BaseCharacter::Tick(float DeltaSeconds)
 	if (CharacterAttributesComponent->GetCurrentStamina() < 5.0f)
 	{
 		bIsSprintRequested = false;
-	}
+	}*/
 }
 
 UCharacterAttributesComponent* AWoF_BaseCharacter::GetCharacterAttributesComponent() const
@@ -143,6 +152,7 @@ void AWoF_BaseCharacter::NotifyJumpApex()
 	CurrentFallApex = GetActorLocation();
 }
 
+/*
 void AWoF_BaseCharacter::EquipFirstItem()
 {
 	CharacterEquipmentComponent->EquipPreimaryItem();
@@ -151,6 +161,16 @@ void AWoF_BaseCharacter::EquipFirstItem()
 void AWoF_BaseCharacter::EquipSecondItem()
 {
 	CharacterEquipmentComponent->EquipSecondaryItem();
+}
+
+void AWoF_BaseCharacter::EquipThirdItem()
+{
+	CharacterEquipmentComponent->EquipThirthItem();
+}
+
+void AWoF_BaseCharacter::EquipFourthItem()
+{
+	CharacterEquipmentComponent->EquipFourthItem();
 }
 
 void AWoF_BaseCharacter::StartFire()
@@ -172,6 +192,40 @@ void AWoF_BaseCharacter::StopFire()
 	if (IsValid(CurrentRangeWeapon))
 	{
 		CurrentRangeWeapon->StopFire();
+	}
+}
+
+void AWoF_BaseCharacter::EquipMeleeWeapon()
+{
+	if (CharacterEquipmentComponent->IsEquip())
+	{
+		CharacterEquipmentComponent->UnequipCurrentItem();
+		GetBaseCharacterMovementComponent()->bOrientRotationToMovement = 1;
+		bUseControllerRotationYaw = 0;
+	}
+	else if (!CharacterEquipmentComponent->IsEquip())
+	{
+		CharacterEquipmentComponent->EquipMeleeItem();
+		GetBaseCharacterMovementComponent()->bOrientRotationToMovement = 0;
+		bUseControllerRotationYaw = 1;
+	}
+}
+
+void AWoF_BaseCharacter::AttackWeaponMelee()
+{
+	AMeleeWeaponItem* CurrentMeleeWeapon = CharacterEquipmentComponent->GetCurrentMeleeWeapon();
+	if (IsValid(CurrentMeleeWeapon))
+	{
+		CurrentMeleeWeapon->StartAttack(EMeleeAttackTypes::WeaponAttack);
+	}
+}
+
+void AWoF_BaseCharacter::AttackBodyMelee()
+{
+	AMeleeWeaponItem* CurrentMeleeWeapon = CharacterEquipmentComponent->GetCurrentMeleeWeapon();
+	if (IsValid(CurrentMeleeWeapon))
+	{
+		CurrentMeleeWeapon->StartAttack(EMeleeAttackTypes::MeleeBodyAttack);
 	}
 }
 
@@ -204,7 +258,7 @@ void AWoF_BaseCharacter::TryChangeSprintState()
 	{
 		WoF_BaseCharacterMovementComponent->StopSprint();
 	}
-}
+}*/
 
 void AWoF_BaseCharacter::EnableRagdoll()
 {
@@ -220,8 +274,10 @@ void AWoF_BaseCharacter::OnDeath()
 	{
 		EnableRagdoll();
 	}
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("dead")));
 }
 
+/*
 bool AWoF_BaseCharacter::CanSprint()
 {
 	if (bIsCanSprint == false)
@@ -238,4 +294,4 @@ bool AWoF_BaseCharacter::CanSprint()
 	{
 		return false;
 	}
-}
+}*/

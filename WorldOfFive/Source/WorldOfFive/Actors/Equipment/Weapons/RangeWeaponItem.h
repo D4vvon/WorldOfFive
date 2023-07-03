@@ -32,8 +32,20 @@ struct FSkillParameters
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams")
 	EWizzardSphereSkillType SkillType = EWizzardSphereSkillType::Missle;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams", meta = (EditCondition = "1 == 0"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams")
 	EHitRegistrationType HitType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams", meta = (EditCondition = "HitType == EHitRegistrationType::Projectile"))
+	TSubclassOf<class AWoF_Projectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams", meta = (EditCondition = "HitType == EHitRegistrationType::HitScan"))
+	float FiringRange = 1000.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams", meta = (EditCondition = "HitType == EHitRegistrationType::HitScan"))
+	TSubclassOf<AActor> ActorClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "SkillParams")
+	TSubclassOf<class UDamageType> DamageTypeClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillParams")
 	class UNiagaraSystem* ResultVFX;
@@ -100,6 +112,7 @@ private:
 
 	float GetShotTimerInterval();
 	FTimerHandle ShotTimer;
+	FTimerHandle MultishotTimer;
 
 	TSkillsArray SkillsArray;
 	EWizzardSphereSkillType CurrentSkillType;

@@ -12,7 +12,7 @@ UReticleWidget* UPlayerHUDWidget::GetReticleWidget()
 	return WidgetTree->FindWidget<UReticleWidget>(ReticleWidgetName);
 }
 
-float UPlayerHUDWidget::GetHealthPercaent() const
+float UPlayerHUDWidget::GetHealthPercent() const
 {
 	float Result = 1.0f;
 	APawn* Pawn = GetOwningPlayerPawn();
@@ -21,6 +21,32 @@ float UPlayerHUDWidget::GetHealthPercaent() const
 	{
 		const UCharacterAttributesComponent* Attributes = BaseCharacter->GetCharacterAttributesComponent();
 		Result = Attributes->GetHealthPercent();
+	}
+	return Result;
+}
+
+float UPlayerHUDWidget::GetStaminaPercent() const
+{
+	float Result = 1.0f;
+	APawn* Pawn = GetOwningPlayerPawn();
+	AWoF_BaseCharacter* BaseCharacter = Cast<AWoF_BaseCharacter>(Pawn);
+	if (IsValid(BaseCharacter))
+	{
+		const UCharacterAttributesComponent* Attributes = BaseCharacter->GetCharacterAttributesComponent();
+		Result = Attributes->GetStaminaPercent();
+	}
+	return Result;
+}
+
+float UPlayerHUDWidget::GetManaPercent() const
+{
+	float Result = 1.0f;
+	APawn* Pawn = GetOwningPlayerPawn();
+	AWoF_BaseCharacter* BaseCharacter = Cast<AWoF_BaseCharacter>(Pawn);
+	if (IsValid(BaseCharacter))
+	{
+		const UCharacterAttributesComponent* Attributes = BaseCharacter->GetCharacterAttributesComponent();
+		Result = Attributes->GetManaPercent();
 	}
 	return Result;
 }

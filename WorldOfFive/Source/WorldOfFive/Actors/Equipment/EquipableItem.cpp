@@ -2,7 +2,21 @@
 
 
 #include "Actors/Equipment/EquipableItem.h"
+#include "Characters/WoF_BaseCharacter.h"
 
+
+void AEquipableItem::SetOwner(AActor* NewOwner)
+{
+	Super::SetOwner(NewOwner);
+	if (IsValid(NewOwner))
+	{
+		CachedCharacterOwner = StaticCast<AWoF_BaseCharacter*>(GetOwner());
+	}
+	else
+	{
+		CachedCharacterOwner = nullptr;
+	}
+}
 
 FName AEquipableItem::GetUnEquippedSocketName()
 {
@@ -17,4 +31,9 @@ FName AEquipableItem::GetEquippedSocketName()
 UAnimMontage* AEquipableItem::GetCharacterEquipAnimMontage()
 {
 	return CharacterEqupAnimMontage;
+}
+
+AWoF_BaseCharacter* AEquipableItem::GetCharacterOwner() const
+{
+	return CachedCharacterOwner.IsValid() ? CachedCharacterOwner.Get() : nullptr;
 }

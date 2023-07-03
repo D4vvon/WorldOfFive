@@ -13,6 +13,8 @@ class WORLDOFFIVE_API AEquipableItem : public AActor
 	GENERATED_BODY()
 	
 public:
+	virtual void SetOwner( AActor* NewOwner ) override;
+
 	FName GetUnEquippedSocketName();
 	FName GetEquippedSocketName();
 
@@ -27,4 +29,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Equipable Item")
 	UAnimMontage* CharacterEqupAnimMontage;
+
+	class AWoF_BaseCharacter* GetCharacterOwner() const;
+
+private:
+	TWeakObjectPtr<class AWoF_BaseCharacter> CachedCharacterOwner;
 };

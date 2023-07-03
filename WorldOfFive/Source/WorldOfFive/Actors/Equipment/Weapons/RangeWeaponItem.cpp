@@ -32,10 +32,10 @@ void ARangeWeaponItem::FireSetup()
 	AWoF_BaseCharacter* CharacterOwner = StaticCast<AWoF_BaseCharacter*>(GetOwner());
 	
 	//float Duration = CharacterOwner->PlayAnimMontage(CharacterFireMontage);
-	CurrentSkillParams.SkillDelay = CharacterOwner->PlayAnimMontage(CurrentSkillParams.CharacterCastingAnimMontage) * 0.75f;
+	float Duration = CharacterOwner->PlayAnimMontage(CurrentSkillParams.CharacterCastingAnimMontage);
 	if (CurrentSkillParams.SkillDelay > 0.0f)
 	{
-		GetWorld()->GetTimerManager().SetTimer(SpellTimer, this, &ARangeWeaponItem::Fire, CurrentSkillParams.SkillDelay, false);
+		GetWorld()->GetTimerManager().SetTimer(SpellTimer, this, &ARangeWeaponItem::Fire, Duration * CurrentSkillParams.SkillDelay, false);
 		if (IsValid(WeaponAnimMontage))
 		{
 			PlayAnimMontage(WeaponAnimMontage);
@@ -46,28 +46,27 @@ void ARangeWeaponItem::FireSetup()
 void ARangeWeaponItem::StartFire()
 {
 	FireSetup();
-	if (WeaponFireMode == EWeaponFireMode::Auto)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
-		GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::FireSetup, GetShotTimerInterval(), true);
-	}
+	//if (WeaponFireMode == EWeaponFireMode::Auto)
+	//{
+	//	GetWorld()->GetTimerManager().ClearTimer(ShotTimer);
+	//	GetWorld()->GetTimerManager().SetTimer(ShotTimer, this, &ARangeWeaponItem::FireSetup, GetShotTimerInterval(), true);
+	//}
 }
 
 void ARangeWeaponItem::Fire()
 {	
-	 AWoF_BaseCharacter* CharacterOwner = StaticCast<AWoF_BaseCharacter*>(GetOwner());
-	 APlayerController* Controller = CharacterOwner->GetController<APlayerController>();
-	 if (!IsValid(Controller))
-	 {
+	AWoF_BaseCharacter* CharacterOwner = StaticCast<AWoF_BaseCharacter*>(GetOwner());
+	APlayerController* Controller = CharacterOwner->GetController<APlayerController>();
+	if (!IsValid(Controller))
+	{
 		return;
-	 }
+	}
 
-	 FVector PlayerViewPoint;
-	 FRotator PlayerViewRotation;
-	 Controller->GetPlayerViewPoint(PlayerViewPoint, PlayerViewRotation);
+	FVector PlayerViewPoint;
+	FRotator PlayerViewRotation;
+	Controller->GetPlayerViewPoint(PlayerViewPoint, PlayerViewRotation);
 
-	 FVector ViewDirection = PlayerViewRotation.RotateVector(FVector::ForwardVector);
-
+	FVector ViewDirection = PlayerViewRotation.RotateVector(FVector::ForwardVector);
 	WeaponBarell->Shot(PlayerViewPoint, ViewDirection, Controller, CurrentSkillParams);
 }
 

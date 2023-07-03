@@ -32,6 +32,7 @@ private:
 	void Jump();
 
 	void ChangeCrouchState();
+/*
 	void Roll();
 
 	void Strafe();
@@ -40,13 +41,19 @@ private:
 
 	void EquipFirstItem();
 	void EquipSecondItem();
+	void EquipThirdItem();
+	void EquipFourthItem();
 
 	void StartingFire();
 	void StopFire();
 	void SetNextSkill();
 	void SetPreviousSkill();
 
-	void CreateAndInitializeWidgets();
+	void EquipMeleeWeapon();
+	void AttackWeaponMelee();
+	void AttackBodyMelee();
+
+	void CreateAndInitializeWidgets();*/
 	class UPlayerHUDWidget* PlayerHUDWidget = nullptr;
 
 	TSoftObjectPtr<class AWoF_BaseCharacter> BaseCharacter;

@@ -10,6 +10,7 @@
 typedef TArray<class AEquipableItem*, TInlineAllocator<(uint32)EEquipmentSlots::MAX>> TItemsArray;
 
 class ARangeWeaponItem;
+class AMeleeWeaponItem;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class WORLDOFFIVE_API UCharacterEquipmentComponent : public UActorComponent
 {
@@ -23,10 +24,16 @@ public:
 
 	void EquipPreimaryItem();
 	void EquipSecondaryItem();
+	void EquipThirthItem();
+	void EquipFourthItem();
 	bool IsEquipping();
+	bool IsEquip();
+
+	void EquipMeleeItem();
 
 
 	ARangeWeaponItem* GetCurrentRangeWeapon();
+	AMeleeWeaponItem* GetCurrentMeleeWeapon() const;
 
 protected:
 	virtual void BeginPlay() override;
@@ -41,6 +48,9 @@ private:
 	EEquipmentSlots CurrentEquippedSlot;
 	class AEquipableItem* CurrentEquippedItem;
 
+	class AMeleeWeaponItem* CurrentMeleeWeaponItem;
+
+	bool bIsEquip = false;
 	bool bIsEquiping = false;
 	FTimerHandle EquipTimer;
 		
